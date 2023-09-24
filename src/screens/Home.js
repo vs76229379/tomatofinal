@@ -11,7 +11,7 @@ export default function Home() {
     const [foodItem, setFooditem] = useState([]);
 
     const loadData = async () => {
-        let response = await fetch("https://tomatonew.onrender.com/api/foodData", {
+        let response = await fetch("https://tomatomernappbackend.onrender.com/api/foodData", {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'
