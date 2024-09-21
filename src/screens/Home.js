@@ -4,8 +4,8 @@ import Footer from '../components/Footer';
 import Navbar from '../components/Navbar';
 
 export default function Home() {
-  const [foodCat, setFoodCat] = useState([]);
-  const [foodItems, setFoodItems] = useState([]);
+  const [foodCat, setFoodCat] = useState([]); // Initialize as an empty array
+  const [foodItems, setFoodItems] = useState([]); // Initialize as an empty array
   const [search, setSearch] = useState('');
 
   const loadFoodItems = async () => {
@@ -62,13 +62,13 @@ export default function Home() {
         </button>
       </div>
       <div className='container'>
-        {foodCat.length > 0 ? foodCat.map((data) => (
+        {Array.isArray(foodCat) && foodCat.length > 0 ? foodCat.map((data) => (
           <div key={data.id} className='row mb-3'>
             <div className='fs-3 m-3'>
               {data.CategoryName}
             </div>
             <hr id="hr-success" style={{ height: "4px", backgroundImage: "-webkit-linear-gradient(left,rgb(0, 255, 137),rgb(0, 0, 0))" }} />
-            {foodItems.length > 0 ? foodItems.filter(
+            {Array.isArray(foodItems) && foodItems.length > 0 ? foodItems.filter(
               (item) => (item.CategoryName === data.CategoryName) && (item.name.toLowerCase().includes(search.toLowerCase()))
             ).map(filterItems => (
               <div key={filterItems.id} className='col-12 col-md-6 col-lg-3'>
