@@ -11,7 +11,7 @@ export default function Home() {
     let response = await fetch("https://tomatomernappbackend.onrender.com/api/foodData", {
       // credentials: 'include',
       // Origin:"http://localhost:3000/login",
-      method: 'GET',
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       }
