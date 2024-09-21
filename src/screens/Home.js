@@ -7,6 +7,7 @@ export default function Home() {
   const [foodCat, setFoodCat] = useState([]); // Initialize as an empty array
   const [foodItems, setFoodItems] = useState([]); // Initialize as an empty array
   const [search, setSearch] = useState('');
+  const [loading, setLoading] = useState(true); // Loading state
 
   const loadFoodItems = async () => {
     try {
@@ -16,17 +17,29 @@ export default function Home() {
           'Content-Type': 'application/json'
         }
       });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
       const data = await response.json();
+      console.log(data); // Check the structure here
       setFoodItems(data[0]);
       setFoodCat(data[1]);
     } catch (error) {
       console.error("Error loading food items:", error);
+    } finally {
+      setLoading(false); // End loading state
     }
   };
 
   useEffect(() => {
     loadFoodItems();
   }, []);
+
+  if (loading) {
+    return <div>Loading...</div>; // Show loading state
+  }
 
   return (
     <div>
@@ -64,19 +77,19 @@ export default function Home() {
       <div className='container'>
         {Array.isArray(foodCat) && foodCat.length > 0 ? foodCat.map((data) => (
           <div key={data.id} className='row mb-3'>
-            <div className='fs-3 m-3'>
-              {data.CategoryName}
-            </div>
-            <hr id="hr-success" style={{ height: "4px", backgroundImage: "-webkit-linear-gradient(left,rgb(0, 255, 137),rgb(0, 0, 0))" }} />
-            {Array.isArray(foodItems) && foodItems.length > 0 ? foodItems.filter(
-              (item) => (item.CategoryName === data.CategoryName) && (item.name.toLowerCase().includes(search.toLowerCase()))
-            ).map(filterItems => (
-              <div key={filterItems.id} className='col-12 col-md-6 col-lg-3'>
-                <Card foodName={filterItems.name} item={filterItems} options={filterItems.options[0]} ImgSrc={filterItems.img} />
-              </div>
-            )) : <div>No Such Data</div>}
+            <div className='fs-3 m-3'>{data.CategoryName}</div>
+            <hr />
+            {Array.isArray(foodItems) && foodItems.length > 0 ? (
+              foodItems.filter((item) => item.CategoryName === data.CategoryName && item.name.toLowerCase().includes(search.toLowerCase())).map((filterItems) => (
+                <div key={filterItems.id} className='col-12 col-md-6 col-lg-3'>
+                  <Card foodName={filterItems.name} item={filterItems} options={filterItems.options[0]} ImgSrc={filterItems.img} />
+                </div>
+              ))
+            ) : (
+              <div>No Food Items Available</div>
+            )}
           </div>
-        )) : ""}
+        )) : <div>No Categories Available</div>}
       </div>
       <Footer />
     </div>
