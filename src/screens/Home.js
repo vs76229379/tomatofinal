@@ -11,7 +11,7 @@ export default function Home() {
     let response = await fetch("https://tomatomernappbackend.onrender.com/api/foodData", {
       // credentials: 'include',
       // Origin:"http://localhost:3000/login",
-      method: 'POST',
+      method: 'GET',
       headers: {
         'Content-Type': 'application/json'
       }
@@ -64,7 +64,7 @@ export default function Home() {
       </div>
       <div className='container'> {/* boootstrap is mobile first */}
         {
-          foodCat != []
+          foodCat !== []
             ? foodCat.map((data) => {
               return (
                 // justify-content-center
@@ -73,7 +73,7 @@ export default function Home() {
                     {data.CategoryName}
                   </div>
                   <hr id="hr-success" style={{ height: "4px", backgroundImage: "-webkit-linear-gradient(left,rgb(0, 255, 137),rgb(0, 0, 0))" }} />
-                  {foodItems != [] ? foodItems.filter(
+                  {foodItems !== [] ? foodItems.filter(
                     (items) => (items.CategoryName === data.CategoryName) && (items.name.toLowerCase().includes(search.toLowerCase())))
                     .map(filterItems => {
                       return (
